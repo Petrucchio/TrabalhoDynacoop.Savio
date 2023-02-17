@@ -1,4 +1,6 @@
-﻿using Microsoft.Xrm.Tooling.Connector;
+﻿using Microsoft.Xrm.Sdk.Query;
+using Microsoft.Xrm.Sdk;
+using Microsoft.Xrm.Tooling.Connector;
 using System;
 using TrabalhoDynacoop.Savio.Model;
 
@@ -16,14 +18,19 @@ namespace TrabalhoDynacoop.Savio.Controller
             this.Account = new Account(ServiceClient);
         }
 
-        public Guid CreateAccount(string accountName, decimal marketCapitalization, int sharesOutstading, int companyRating, string creator)
+        public Guid CreateAccount(string accountName, string accountCnpj, decimal marketCapitalization, int sharesOutstading, int companyRating, string creator)
         {
-            return Account.CreateAccount(accountName, marketCapitalization, sharesOutstading, companyRating, creator);
+            return Account.CreateAccount(accountName, accountCnpj, marketCapitalization, sharesOutstading, companyRating, creator);
         }
 
-        public Guid CreateAccount(string accountName, decimal marketCapitalization, int sharesOutstading, int companyRating, string creator, Guid contactId)
+        public Guid CreateAccount(string accountName, string accountCnpj, decimal marketCapitalization, int sharesOutstading, int companyRating, string creator, Guid contactId)
         {
-            return Account.CreateAccount(accountName, marketCapitalization, sharesOutstading, companyRating, creator, contactId);
+            return Account.CreateAccount(accountName, accountCnpj, marketCapitalization, sharesOutstading, companyRating, creator, contactId);
+        }
+
+        public bool GetAccountByCnpj(string cnpj)
+        {
+            return Account.GetAccountByCnpj(cnpj);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xrm.Tooling.Connector;
+﻿using Microsoft.Xrm.Sdk;
+using Microsoft.Xrm.Tooling.Connector;
 using System;
 using System.Globalization;
 using TrabalhoDynacoop.Savio.Controller;
@@ -20,6 +21,8 @@ namespace TrabalhoDynacoop.Savio
                 Console.WriteLine("ACCOUNT DETAILS");
                 Console.Write("Enter account name: ");
                 string accountName = Console.ReadLine();
+                Console.Write("Enter account cnpj: ");
+                string accountCnpj = Console.ReadLine();
                 Console.Write("Enter the market capitalization value: ");
                 decimal marketCapitalization = decimal.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
                 Console.Write("Enter the number of shares outstanding: ");
@@ -28,7 +31,6 @@ namespace TrabalhoDynacoop.Savio
                 int companyRating = int.Parse(Console.ReadLine());
                 Console.Write("Created by: ");
                 string creator = Console.ReadLine();
-
                 Console.Write("Do you want to create a contact for this account? (Y/N) ");
                 string anwserToCreateContact = Console.ReadLine();
 
@@ -39,21 +41,37 @@ namespace TrabalhoDynacoop.Savio
                         Console.WriteLine("CONTACT DETAILS");
                         Console.Write("Enter contact name: ");
                         string contactName = Console.ReadLine();
+                        Console.Write("Enter contact cpf: ");
+                        string contactCpf = Console.ReadLine();
                         Console.Write("Enter job title: ");
                         string jobTitle = Console.ReadLine();
                         Console.Write("Enter contact age: ");
                         int contactAge = int.Parse(Console.ReadLine());
 
-                        Guid contactId = contactController.CreateContact(contactName, jobTitle, contactAge);
-                        Guid accountId = accountController.CreateAccount(accountName, marketCapitalization, sharesOutstading, companyRating, creator, contactId);
+                        bool existingAccount = accountController.GetAccountByCnpj(accountCnpj),
+                            existingContact = contactController.GetContactByCpf(contactCpf);
+
+                        if (existingAccount || existingContact)
+                        {
+                            throw new Exception($"It was not possible to create the account, because the CNPJ or CPF already exists :(");
+                        }
+
+                        Guid contactId = contactController.CreateContact(contactName, contactCpf, jobTitle, contactAge);
+                        Guid accountId = accountController.CreateAccount(accountName, accountCnpj, marketCapitalization, sharesOutstading, companyRating, creator, contactId);
 
                         Console.WriteLine($@"https://trabalhodynamics.crm2.dynamics.com/main.aspx?appid=ee380667-3bae-ed11-9885-002248365eb3&pagetype=entityrecord&etn=account&id={accountId}");
-                        
+
                         break;
                     case "N":
-                        accountId = accountController.CreateAccount(accountName, marketCapitalization, sharesOutstading, companyRating, creator);
+                        existingAccount = accountController.GetAccountByCnpj(accountCnpj);
+                        if (existingAccount)
+                        {
+                            throw new Exception("It was not possible to create the account, because the CNPJ already exists :(");
+                        }
+
+                        accountId = accountController.CreateAccount(accountName, accountCnpj, marketCapitalization, sharesOutstading, companyRating, creator);
                         Console.WriteLine($@"https://trabalhodynamics.crm2.dynamics.com/main.aspx?appid=ee380667-3bae-ed11-9885-002248365eb3&pagetype=entityrecord&etn=account&id={accountId}");
-                        
+
                         break;
                     default:
                         Console.WriteLine("Invalid option :(");

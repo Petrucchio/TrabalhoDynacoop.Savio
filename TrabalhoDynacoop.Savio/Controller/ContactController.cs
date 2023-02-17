@@ -1,4 +1,6 @@
-﻿using Microsoft.Xrm.Tooling.Connector;
+﻿using Microsoft.Xrm.Sdk.Query;
+using Microsoft.Xrm.Sdk;
+using Microsoft.Xrm.Tooling.Connector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,9 +22,14 @@ namespace TrabalhoDynacoop.Savio.Controller
             this.Contact = new Contact(ServiceClient);
         }
 
-        public Guid CreateContact(string contactName, string jobTitle, int contactAge)
+        public Guid CreateContact(string contactName, string contactCpf, string jobTitle, int contactAge)
         {
-            return Contact.CreateContact(contactName, jobTitle, contactAge);
+            return Contact.CreateContact(contactName, contactCpf, jobTitle, contactAge);
+        }
+
+        public bool GetContactByCpf(string cpf)
+        {
+            return Contact.GetContactByCpf(cpf);
         }
     }
 }
