@@ -9,7 +9,7 @@ namespace TrabalhoDynacoop.Savio
 {
     internal class Singleton
     {
-        public static CrmServiceClient getService()
+        public static CrmServiceClient GetService()
         {
             string url = "trabalhodynamics";
             string clientId = "fe50b9a5-6c1a-4bf3-804f-89ec0b2103c0";
