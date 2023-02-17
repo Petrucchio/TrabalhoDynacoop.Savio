@@ -4,6 +4,7 @@ using Microsoft.Xrm.Sdk.Query;
 using Microsoft.Xrm.Tooling.Connector;
 using System;
 using System.Linq;
+using System.Security.Principal;
 using TrabalhoDynacoop.Savio.Controller;
 
 namespace TrabalhoDynacoop.Savio.Model
@@ -20,6 +21,7 @@ namespace TrabalhoDynacoop.Savio.Model
         public Guid CreateAccount(string accountName, string accountCnpj, decimal marketCapitalization, int sharesOutstading, int companyRating, string creator)
         {
             VerifyAccount(accountCnpj);
+            Guid position = CreatePosition(creator);
 
             Entity account = new Entity("account");
             account["name"] = accountName;
@@ -27,6 +29,7 @@ namespace TrabalhoDynacoop.Savio.Model
             account["marketcap"] = new Money(marketCapitalization);
             account["sharesoutstanding"] = sharesOutstading;
             account["accountclassificationcode"] = new OptionSetValue(companyRating);
+            account["tdc_criado_pelo"] = new EntityReference("position", position);
 
             return this.ServiceClient.Create(account);
         }
@@ -34,6 +37,7 @@ namespace TrabalhoDynacoop.Savio.Model
         public Guid CreateAccount(string accountName, string accountCnpj, decimal marketCapitalization, int sharesOutstading, int companyRating, string creator, Guid contactId)
         {
             VerifyAccount(accountCnpj);
+            Guid position = CreatePosition(creator);
 
             Entity account = new Entity("account");
             account["name"] = accountName;
@@ -41,9 +45,17 @@ namespace TrabalhoDynacoop.Savio.Model
             account["marketcap"] = new Money(marketCapitalization);
             account["sharesoutstanding"] = sharesOutstading;
             account["accountclassificationcode"] = new OptionSetValue(companyRating);
-            account["primarycontactid"] = new EntityReference("account", contactId);
+            account["tdc_criado_pelo"] = new EntityReference("position", position);
+            account["primarycontactid"] = new EntityReference("contact", contactId);
 
             return this.ServiceClient.Create(account);
+        }
+
+        private Guid CreatePosition(string creator)
+        {
+            Entity position = new Entity("position");
+            position["name"] = creator;
+            return this.ServiceClient.Create(position);
         }
 
         public bool GetAccountByCnpj(string cnpj)
