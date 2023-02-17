@@ -48,14 +48,6 @@ namespace TrabalhoDynacoop.Savio
                         Console.Write("Enter contact age: ");
                         int contactAge = int.Parse(Console.ReadLine());
 
-                        bool existingAccount = accountController.GetAccountByCnpj(accountCnpj),
-                            existingContact = contactController.GetContactByCpf(contactCpf);
-
-                        if (existingAccount || existingContact)
-                        {
-                            throw new Exception($"It was not possible to create the account, because the CNPJ or CPF already exists :(");
-                        }
-
                         Guid contactId = contactController.CreateContact(contactName, contactCpf, jobTitle, contactAge);
                         Guid accountId = accountController.CreateAccount(accountName, accountCnpj, marketCapitalization, sharesOutstading, companyRating, creator, contactId);
 
@@ -63,12 +55,6 @@ namespace TrabalhoDynacoop.Savio
 
                         break;
                     case "N":
-                        existingAccount = accountController.GetAccountByCnpj(accountCnpj);
-                        if (existingAccount)
-                        {
-                            throw new Exception("It was not possible to create the account, because the CNPJ already exists :(");
-                        }
-
                         accountId = accountController.CreateAccount(accountName, accountCnpj, marketCapitalization, sharesOutstading, companyRating, creator);
                         Console.WriteLine($@"https://trabalhodynamics.crm2.dynamics.com/main.aspx?appid=ee380667-3bae-ed11-9885-002248365eb3&pagetype=entityrecord&etn=account&id={accountId}");
 

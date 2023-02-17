@@ -19,11 +19,7 @@ namespace TrabalhoDynacoop.Savio.Model
 
         public Guid CreateAccount(string accountName, string accountCnpj, decimal marketCapitalization, int sharesOutstading, int companyRating, string creator)
         {
-            //bool existingAccount = GetAccountByCnpj(accountCnpj);
-            //if (existingAccount)
-            //{
-            //    throw new Exception("It was not possible to create the account, because the CNPJ already exists :(");
-            //}
+            VerifyAccount(accountCnpj);
 
             Entity account = new Entity("account");
             account["name"] = accountName;
@@ -37,6 +33,8 @@ namespace TrabalhoDynacoop.Savio.Model
 
         public Guid CreateAccount(string accountName, string accountCnpj, decimal marketCapitalization, int sharesOutstading, int companyRating, string creator, Guid contactId)
         {
+            VerifyAccount(accountCnpj);
+
             Entity account = new Entity("account");
             account["name"] = accountName;
             account["tdc_cnpj"] = accountCnpj;
@@ -59,6 +57,15 @@ namespace TrabalhoDynacoop.Savio.Model
                 return true;
             else
                 return false;
+        }
+
+        private void VerifyAccount(string accountCnpj)
+        {
+            bool existingAccount = GetAccountByCnpj(accountCnpj);
+            if (existingAccount)
+            {
+                throw new Exception("It was not possible to create the account, because the CNPJ already exists :(");
+            }
         }
     }
 }

@@ -20,11 +20,7 @@ namespace TrabalhoDynacoop.Savio.Model
 
         public Guid CreateContact(string contactName, string contactCpf, string jobTitle, int contactAge)
         {
-            //bool existingContact = GetContactByCpf(contactCpf);
-            //if (existingContact)
-            //{
-            //    throw new Exception("It was not possible to create the contact, because the CPF already exists :(");
-            //}
+            VerifyContact(contactCpf);
 
             Entity contact = new Entity("contact");
             contact["firstname"] = contactName;
@@ -33,6 +29,15 @@ namespace TrabalhoDynacoop.Savio.Model
             contact["tdc_idade"] = contactAge;
 
             return this.ServiceClient.Create(contact);
+        }
+
+        private void VerifyContact(string contactCpf)
+        {
+            bool existingContact = GetContactByCpf(contactCpf);
+            if (existingContact)
+            {
+                throw new Exception("It was not possible to create the contact, because the CNPJ or CPF already exists :(");
+            }
         }
 
         public bool GetContactByCpf(string cpf)
