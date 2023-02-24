@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrabalhoDynacoop.Savio", "T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrabalhoDynacoop.Savio.Plugin", "TrabalhoDynacoop.Savio.Plugin\TrabalhoDynacoop.Savio.Plugin.csproj", "{0590B656-6D3B-49A4-ADC2-D1B8AA75B84F}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TrabalhoDynacoop.Savio.SharedProject", "TrabalhoDynacoop.Savio.SharedProject\TrabalhoDynacoop.Savio.SharedProject.shproj", "{F2ED7FC5-BB5B-4835-BC7B-05C291BD53AE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,5 +29,9 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {210DD4B8-06A7-449F-8746-4A1EFF4E4654}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		TrabalhoDynacoop.Savio.SharedProject\TrabalhoDynacoop.Savio.SharedProject.projitems*{0590b656-6d3b-49a4-adc2-d1b8aa75b84f}*SharedItemsImports = 4
+		TrabalhoDynacoop.Savio.SharedProject\TrabalhoDynacoop.Savio.SharedProject.projitems*{f2ed7fc5-bb5b-4835-bc7b-05c291bd53ae}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal
